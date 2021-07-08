@@ -31,6 +31,7 @@ class Goodreads {
       return Work.arrayFromApi(results)
     } catch (err) {
       console.error(err)
+      throw err
     }
   }
 }
