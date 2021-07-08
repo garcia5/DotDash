@@ -6,18 +6,14 @@ const app = express()
 
 const PORT = 5000
 
-app.get('/', (req, res) => {
-  res.status(200).send('Hello, world');
-})
-
-
 app.get('/search', async (req, res) => {
-  const goodreads = new Goodreads();
+  const goodreads = new Goodreads()
   try {
-    const rspBody = await goodreads.searchBooks(req.query);
-    res.status(200).send(rspBody);
+    const rspBody = await goodreads.searchBooks(req.query)
+    res.status(200).send(rspBody)
   } catch (err) {
-    res.status(500).send(err);
+    // TODO: more specific error handling
+    res.status(500).send(err)
   }
 })
 
