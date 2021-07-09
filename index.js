@@ -6,6 +6,10 @@ const app = express()
 
 const PORT = 5000
 
+app.get('/', (req, res) => {
+  res.send('OK')
+})
+
 app.get('/search', async (req, res) => {
   const goodreads = new Goodreads()
   try {
