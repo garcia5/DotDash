@@ -27,7 +27,12 @@ class Work {
 
   static fromApi (unparsedWork) {
     // Helper to flatten jsonified object
-    const flattenValue = (obj) => { return obj[0]._ ?? obj[0] }
+    const flattenValue = (obj) => {
+      if (obj[0]?.$?.nil === "true") {
+        return null
+      }
+      return obj[0]._ ?? obj[0]
+    }
 
     // Pull out initial snake_cased variables
     const {
