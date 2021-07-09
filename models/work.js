@@ -22,13 +22,13 @@ class Work {
   }
 
   static arrayFromApi (toJsArray) {
-     return toJsArray.map(w => Work.fromApi(w))
+    return toJsArray.map(w => Work.fromApi(w))
   }
 
   static fromApi (unparsedWork) {
     // Helper to flatten jsonified object
     const flattenValue = (obj) => {
-      if (obj[0]?.$?.nil === "true") {
+      if (obj[0]?.$?.nil === 'true') {
         return null
       }
       return obj[0]._ ?? obj[0]
