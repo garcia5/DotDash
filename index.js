@@ -27,7 +27,7 @@ app.get('/search', async (req, res) => {
     const { query, page, search } = req.query
     const rspBody = await goodreads.searchBooks(query, page, search)
 
-    rsp.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.status(200).send(rspBody)
   } catch (err) {
     if (err?.response) {
