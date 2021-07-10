@@ -7,7 +7,7 @@ class Work {
     originalPublicationYear,
     originalPublicationMonth,
     originalPublicationDay,
-    averateRating,
+    averageRating,
     ratingsCount
   ) {
     this.id = id
@@ -17,7 +17,7 @@ class Work {
     this.originalPublicationYear = originalPublicationYear
     this.originalPublicationMonth = originalPublicationMonth
     this.originalPublicationDay = originalPublicationDay
-    this.averateRating = averateRating
+    this.averageRating = averageRating
     this.ratingsCount = ratingsCount
   }
 

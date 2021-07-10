@@ -4,9 +4,12 @@ const Goodreads = require('./controllers/goodreads-controller')
 
 const app = express()
 app.use((req, rsp, next) => {
+  console.log('Received request...')
   console.log(req.query);
   console.log(req.headers);
   next();
+  console.log('Sending response...')
+  console.log(`${rsp.statusCode} ${rsp.statusMessage}`);
 })
 
 const PORT = 5000
