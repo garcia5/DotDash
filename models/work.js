@@ -1,5 +1,8 @@
 const { flattenValue } = require('../utils')
 
+/**
+ * Data about a single 'work' -- book, article, etc
+ */
 class Work {
   constructor (
     id,

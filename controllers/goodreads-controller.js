@@ -2,6 +2,9 @@ const axios = require('axios').default
 const parseXml = require('xml2js').parseStringPromise
 const SearchResponse = require('../models/search-response')
 
+/**
+ * Interact with the Goodreads public API
+ */
 class Goodreads {
   constructor () {
     this.baseUrl = process.env.GOODREADS_URL
@@ -10,7 +13,9 @@ class Goodreads {
 
   /**
     * Search Goodreads for the given query string. Optionally pass a field to
-    * search against, as well as a result page to return
+    * search against, as well as a result page to return.
+    * Return a flattened, stripped-down, JSONified version of the
+    * Goodreads API response
     */
   async searchBooks (searchStr, pageNum, searchField) {
     const url = `${this.baseUrl}search/index.xml`
