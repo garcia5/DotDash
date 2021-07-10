@@ -10,7 +10,8 @@ class Work {
     originalPublicationMonth,
     originalPublicationDay,
     averageRating,
-    ratingsCount
+    ratingsCount,
+    thumbnail,
   ) {
     this.id = id
     this.title = title
@@ -21,6 +22,7 @@ class Work {
     this.originalPublicationDay = originalPublicationDay
     this.averageRating = averageRating
     this.ratingsCount = ratingsCount
+    this.thumbnail = thumbnail
   }
 
   static arrayFromApi (unparsedWorks) {
@@ -41,8 +43,10 @@ class Work {
 
     // Grab the data we care about from them
     const workId = flattenValue(id)
-    const title = flattenValue(best_book[0].title)
-    const author = best_book[0].author[0]
+    const bookInfo = best_book[0]
+    const thumbnail = flattenValue(bookInfo.small_image_url)
+    const title = flattenValue(bookInfo.title)
+    const author = bookInfo.author[0]
     const authorName = flattenValue(author.name)
     const authorId = flattenValue(author.id)
     const pubYear = flattenValue(original_publication_year)
@@ -60,7 +64,8 @@ class Work {
       pubMonth,
       pubDay,
       avgRating,
-      ratingsCount
+      ratingsCount,
+      thumbnail
     )
   }
 }
