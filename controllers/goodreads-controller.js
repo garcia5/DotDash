@@ -8,13 +8,6 @@ class Goodreads {
     this.apiKey = process.env.GOODREADS_API_KEY
   }
 
-  async searchBooksTest (query) {
-    const url = `${this.baseUrl}search/index.xml`
-    const response = await axios.get(url, { params: { ...query, key: this.apiKey } })
-    console.log(response.data)
-    return response.data
-  }
-
   /**
     * Search Goodreads for the given query string. Optionally pass a field to
     * search against, as well as a result page to return

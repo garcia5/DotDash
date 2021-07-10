@@ -4,12 +4,16 @@ const Goodreads = require('./controllers/goodreads-controller')
 
 const app = express()
 app.use((req, rsp, next) => {
-  console.log('Received request...')
+  console.log()
+  console.log('*** Received request***')
   console.log(req.query);
   console.log(req.headers);
   next();
-  console.log('Sending response...')
-  console.log(`${rsp.statusCode} ${rsp.statusMessage}`);
+  // Open the API up to codepen.io
+  rsp.setHeader('Access-Control-Allow-Origin', '*')
+  console.log('***Sending response***')
+  console.log(`${rsp.statusCode} ${rsp.statusMessage || ''}`);
+  console.log()
 })
 
 const PORT = 5000
@@ -27,7 +31,7 @@ app.get('/search', async (req, res) => {
     res.status(200).send(rspBody)
   } catch (err) {
     if (err?.response) {
-      res.status(err.response.status).send(err.response.statusText, {headers: rspHeaders})
+      res.status(err.response.status).send(err.response.statusText)
     } else {
       res.status(500).send('Internal Server Error')
     }
