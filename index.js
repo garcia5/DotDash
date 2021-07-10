@@ -9,7 +9,6 @@ app.use((req, rsp, next) => {
   console.log(req.query)
   console.log(req.headers)
   next()
-  // Open the API up to codepen.io
   console.log('***Sending response***')
   console.log(`${rsp.statusCode} ${rsp.statusMessage || ''}`)
   console.log()
@@ -27,7 +26,7 @@ app.get('/search', async (req, res) => {
     const { query, page, search } = req.query
     const rspBody = await goodreads.searchBooks(query, page, search)
 
-    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Origin', 'https://cdpn.io')
     res.status(200).send(rspBody)
   } catch (err) {
     if (err?.response) {

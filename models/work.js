@@ -24,48 +24,44 @@ class Work {
   }
 
   static arrayFromApi (unparsedWorks) {
-    return unparsedWorks.map(w => Work.fromApi(w)).filter(w => w !== null)
+    return unparsedWorks.map(w => Work.fromApi(w))
   }
 
   static fromApi (unparsedWork) {
-    try {
-      // Pull out initial snake_cased variables
-      const {
-        id,
-        best_book,
-        original_publication_day,
-        original_publication_month,
-        original_publication_year,
-        average_rating,
-        ratings_count
-      } = unparsedWork
+    // Pull out initial snake_cased variables
+    const {
+      id,
+      best_book,
+      original_publication_day,
+      original_publication_month,
+      original_publication_year,
+      average_rating,
+      ratings_count
+    } = unparsedWork
 
-      // Grab the data we care about from them
-      const workId = flattenValue(id)
-      const title = flattenValue(best_book[0].title)
-      const author = best_book[0].author[0]
-      const authorName = flattenValue(author.name)
-      const authorId = flattenValue(author.id)
-      const pubYear = flattenValue(original_publication_year)
-      const pubMonth = flattenValue(original_publication_month)
-      const pubDay = flattenValue(original_publication_day)
-      const avgRating = flattenValue(average_rating)
-      const ratingsCount = flattenValue(ratings_count)
+    // Grab the data we care about from them
+    const workId = flattenValue(id)
+    const title = flattenValue(best_book[0].title)
+    const author = best_book[0].author[0]
+    const authorName = flattenValue(author.name)
+    const authorId = flattenValue(author.id)
+    const pubYear = flattenValue(original_publication_year)
+    const pubMonth = flattenValue(original_publication_month)
+    const pubDay = flattenValue(original_publication_day)
+    const avgRating = flattenValue(average_rating)
+    const ratingsCount = flattenValue(ratings_count)
 
-      return new Work(
-        workId,
-        title,
-        authorName,
-        authorId,
-        pubYear,
-        pubMonth,
-        pubDay,
-        avgRating,
-        ratingsCount
-      )
-    } catch (_) {
-      return null
-    }
+    return new Work(
+      workId,
+      title,
+      authorName,
+      authorId,
+      pubYear,
+      pubMonth,
+      pubDay,
+      avgRating,
+      ratingsCount
+    )
   }
 }
 
