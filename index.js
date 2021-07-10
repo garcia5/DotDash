@@ -6,12 +6,12 @@ const app = express()
 app.use((req, rsp, next) => {
   console.log()
   console.log('*** Received request***')
-  console.log(req.query);
-  console.log(req.headers);
-  next();
+  console.log(req.query)
+  console.log(req.headers)
+  next()
   // Open the API up to codepen.io
   console.log('***Sending response***')
-  console.log(`${rsp.statusCode} ${rsp.statusMessage || ''}`);
+  console.log(`${rsp.statusCode} ${rsp.statusMessage || ''}`)
   console.log()
 })
 

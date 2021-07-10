@@ -1,6 +1,6 @@
 const axios = require('axios').default
 const parseXml = require('xml2js').parseStringPromise
-const Work = require('../models/work')
+const SearchResponse = require('../models/search-response')
 
 class Goodreads {
   constructor () {
@@ -19,9 +19,8 @@ class Goodreads {
     try {
       const response = await axios.get(url, { params })
       const { GoodreadsResponse } = await parseXml(response.data)
-      // Pull out the matching 'works' into a flatter data model
-      const results = GoodreadsResponse.search[0].results[0].work
-      return results ? Work.arrayFromApi(results) : []
+      const results = GoodreadsResponse.search[0]
+      return SearchResponse.fromApi(results)
     } catch (err) {
       console.error(err)
       throw err
