@@ -3,6 +3,11 @@ const express = require('express')
 const Goodreads = require('./controllers/goodreads-controller')
 
 const app = express()
+app.use((req, rsp, next) => {
+  console.log(req.query);
+  console.log(req.headers);
+  next();
+})
 
 const PORT = 5000
 
@@ -15,10 +20,11 @@ app.get('/search', async (req, res) => {
   try {
     const { query, page, search } = req.query
     const rspBody = await goodreads.searchBooks(query, page, search)
+
     res.status(200).send(rspBody)
   } catch (err) {
     if (err?.response) {
-      res.status(err.response.status).send(err.response.statusText)
+      res.status(err.response.status).send(err.response.statusText, {headers: rspHeaders})
     } else {
       res.status(500).send('Internal Server Error')
     }
