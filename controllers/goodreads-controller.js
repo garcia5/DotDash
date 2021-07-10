@@ -28,7 +28,7 @@ class Goodreads {
       const { GoodreadsResponse } = await parseXml(response.data)
       // Pull out the matching 'works' into a flatter data model
       const results = GoodreadsResponse.search[0].results[0].work
-      return Work.arrayFromApi(results)
+      return results ? Work.arrayFromApi(results) : []
     } catch (err) {
       console.error(err)
       throw err
