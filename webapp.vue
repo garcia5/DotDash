@@ -2,59 +2,60 @@
   <div id="app">
     <h1 ref="title">Search for a Book!</h1>
 
+    <!-- Inputs -->
     <div class="flex-container-row justify-center" id="search-group">
       <b-form-select
+        id="field-select"
+        class="search-form-item"
+        title="Field(s) to query against"
         v-model="selectedField"
         :options="fieldOptions"
-        class="search-form-item"
-        id="field-select"
-        title="Field(s) to query against"
         v-b-tooltip.hover
       />
       <b-form-input
-        v-model="query"
-        :type="'search'"
         class="search-form-item"
         placeholder="Enter search criteria"
-        @keydown.enter.native="getSearchResults()"
+        v-model="query"
+        :type="'search'"
+        @keydown.enter.native="getSearchResults(1)"
       />
       <b-button
-        variant="outline-primary"
         id="search-button"
-        @click="getSearchResults"
         class="search-form-item"
+        variant="outline-primary"
+        @click="getSearchResults(1)"
       >
         Search
       </b-button>
     </div>
+    <!-- /Inputs -->
 
+    <!-- Outputs -->
     <div
       id="results-group"
       class="flex-container"
-      v-if="!errors && results !== null"
+      v-if="!errors && (results !== null || loading)"
     >
-      <div
-        class="flex-container-row justify-center"
-        v-if="results && numResults > 0"
-      >
+      <div class="flex-container-row justify-center" v-if="numResults !== null">
         <b-pagination
           id="nav-button-group"
           v-model="page"
-          @input="getSearchResults()"
           :totalRows="numResults"
           :perPage="resultsPerPage"
+          @change="getSearchResults"
           last-number
         />
       </div>
+
       <b-table
-        striped
-        responsive
+        class="flex-item-variable"
         sticky-header="100%"
         :items="results"
         :fields="resultTableHeadings"
         :busy="loading"
         :primary-key="'id'"
-        class="flex-item-variable"
+        striped
+        responsive
       >
         <template #table-busy>
           <div id="results-loading">
@@ -67,11 +68,20 @@
             {{ data.item.title }}
           </span>
         </template>
+        <template #cell(publicationDate)="data">
+          <span>
+            {{ getPubDate(data.item) }}
+          </span>
+        </template>
       </b-table>
     </div>
+    <!-- /Outputs -->
+
+    <!-- Errors -->
     <div v-if="errors">
       {{ errors }}
     </div>
+    <!-- /Errors -->
   </div>
 </template>
 
@@ -80,6 +90,18 @@ import axios from "https://cdn.skypack.dev/axios@0.21.1";
 export default {
   data() {
     return {
+      // View data
+      resultsPerPage: 20,
+      errors: null,
+      loading: false,
+      resultTableHeadings: [
+        { key: "title", label: "Title" },
+        { key: "authorName", label: "Author" },
+        { key: "publicationDate", label: "Publication Date" },
+        { key: "averageRating", label: "Average Rating" }
+      ],
+
+      // Inputs
       query: "",
       page: 1,
       selectedField: "all",
@@ -88,36 +110,33 @@ export default {
         { value: "title", text: "Title", disabled: false },
         { value: "author", text: "Author", disabled: false }
       ],
-      resultTableHeadings: [
-        { key: "title", label: "Title" },
-        { key: "authorName", label: "Author" },
-        { key: "publicationDate", label: "Publication Date" },
-        { key: "averageRating", label: "Average Rating" }
-      ],
+
+      // Outputs
       results: null,
-      resultsPerPage: 20,
-      numResults: 0,
-      errors: null,
-      loading: false
+      numResults: null
     };
   },
+
   methods: {
-    getSearchResults() {
+    getSearchResults(pageNum) {
+      this.loading = true;
+      // Allow manual page reset from input/button
+      this.page = pageNum;
+
       const url = `https://Dotdash-interview.agarcia02.repl.co/search`;
       const params = {
         query: this.query,
-        page: this.page,
+        page: pageNum,
         search: this.selectedField
       };
       const headers = {
         Accept: "application/json"
       };
-      this.results = [];
-      this.loading = true;
+
       axios
         .get(url, { params, headers })
         .then((rsp) => {
-          this.results = this.formatWorks(rsp.data.works);
+          this.results = rsp.data.works;
           this.numResults = rsp.data.totalResults;
         })
         .catch((err) => {
@@ -127,28 +146,26 @@ export default {
           this.loading = false;
         });
     },
-    formatWorks(works) {
-      return works.map((work) => {
-        const {
-          originalPublicationDay,
-          originalPublicationMonth,
-          originalPublicationYear
-        } = work;
-        let formattedPubDate = "";
-        if (originalPublicationYear) {
-          formattedPubDate += originalPublicationYear;
-        }
-        if (originalPublicationMonth) {
-          formattedPubDate += "-" + originalPublicationMonth.padStart(2, "0");
-        }
-        if (originalPublicationDay) {
-          formattedPubDate += "-" + originalPublicationDay.padStart(2, "0");
-        }
-        return {
-          publicationDate: formattedPubDate,
-          ...work
-        };
-      });
+
+    getPubDate(work) {
+      // Turn distinct day, month, year values into a single string
+      // Omit any value that is not available
+      const {
+        originalPublicationDay,
+        originalPublicationMonth,
+        originalPublicationYear
+      } = work;
+      let formattedPubDate = "";
+      if (originalPublicationYear) {
+        formattedPubDate += originalPublicationYear;
+      }
+      if (originalPublicationMonth) {
+        formattedPubDate += "-" + originalPublicationMonth.padStart(2, "0");
+      }
+      if (originalPublicationDay) {
+        formattedPubDate += "-" + originalPublicationDay.padStart(2, "0");
+      }
+      return formattedPubDate;
     }
   }
 };
@@ -217,4 +234,3 @@ h1 {
   padding: 2px;
 }
 </style>
-
