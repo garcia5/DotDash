@@ -2,8 +2,8 @@ const { flattenValue } = require('../utils')
 const Work = require('./work')
 
 /**
- * Response model for /search endpoint. Returns a page of (20) Works
- * as well as the total number of works
+ * Response model for /search endpoint. Returns a page (20) of Works
+ * as well as the total number of results
  */
 class SearchResponse {
   constructor (

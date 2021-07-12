@@ -14,7 +14,7 @@ class Work {
     originalPublicationDay,
     averageRating,
     ratingsCount,
-    thumbnail,
+    thumbnail
   ) {
     this.id = id
     this.title = title
