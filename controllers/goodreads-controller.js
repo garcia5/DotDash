@@ -9,6 +9,7 @@ class Goodreads {
   constructor () {
     this.baseUrl = process.env.GOODREADS_URL
     this.apiKey = process.env.GOODREADS_API_KEY
+    this.anotherVar = 'CONST STRING'
   }
 
   /**
